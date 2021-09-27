@@ -61,7 +61,8 @@ remote func CreateAccount(username, password, player_id):
 	var gateway_id = get_tree().get_rpc_sender_id()
 	var result
 	var message
-	if PlayerData.PlayerIDs.has(username):
+	if PlayerData.dbCheckUniqueUsername(username) == true:
+		print("auth script found same username")
 		result = false
 		message = 2
 	else:
@@ -69,8 +70,9 @@ remote func CreateAccount(username, password, player_id):
 		message = 3
 		var salt = GenerateSalt()
 		var hashed_password = GenerateHashedPassword(password, salt)
-		PlayerData.PlayerIDs[username] = {"Password": hashed_password, "Salt" : salt}
-		PlayerData.SavePlayerIDs()
+		####Database shiz
+		PlayerData.dbNewPlayer(username, password, salt)
+		####
 	
 	rpc_id(gateway_id, "CreateAccountResults", result, player_id, message)
 
