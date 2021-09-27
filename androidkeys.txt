@@ -1,0 +1,2 @@
+C:/Users/Rick/AppData/Local/Android/Sdk
+C:/Program Files/Android/Android Studio/jre/bin/debug.keystore

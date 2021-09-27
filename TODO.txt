@@ -1,0 +1,7 @@
+18/9/21
+(fixed) Players can only see players spawned in after them
+(fixed) -Enemies didnt always show up
+-I was the only one that create accounts that were able to be logged in to (had to make account for other player and then give them the creds)
+-When players tried to log into their own created account they couldnt, but it was created
+(fixed) -Laggy af 500ms
+(fixed) Enimies were invisible on respawn possibly
