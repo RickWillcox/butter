@@ -4,10 +4,12 @@ var network = NetworkedMultiplayerENet.new()
 var max_servers = 5
 var port = 1911
 var hashed_password
+var auth_hashed_password
 var salt
 
 func _ready():
 	StartServer()
+	PlayerData.dbRefreshDatabase()	
 		
 func StartServer():
 	network.create_server(port, max_servers)
@@ -24,18 +26,26 @@ func _Peer_Disconnected(gateway_id):
 	print("Gateway " + str(gateway_id) + " Disconnected")
 
 remote func AuthenticatePlayer(username, password, player_id):
+	print(password)
+	PlayerData.dbRefreshDatabase()	
 	var token
 	print("Authentication request received")
 	var gateway_id = get_tree().get_rpc_sender_id()
 	var result
 	print("Starting Authentication")
-	if not PlayerData.PlayerIDs.has(username):
+	var auth_player_data = PlayerData.dbCheckUniqueUsername(username)
+	var username_exists = auth_player_data[0]
+	var db_player_username = auth_player_data[1]
+	var db_player_password = auth_player_data[2]
+	var db_salt = auth_player_data[3]
+	if username_exists == false:
 		print("User not found")
 		result = false
 	else:
-		var retreived_salt = PlayerData.PlayerIDs[username].Salt
-		hashed_password = GenerateHashedPassword(password, retreived_salt)
-		if not PlayerData.PlayerIDs[username].Password == hashed_password:
+		auth_hashed_password = GenerateHashedPassword(password, db_salt)
+		if not db_player_password == auth_hashed_password:
+			print(db_player_password)
+			print(auth_hashed_password)
 			print("Incorrect password")
 			result = false
 		else:
@@ -58,10 +68,11 @@ remote func AuthenticatePlayer(username, password, player_id):
 	rpc_id(gateway_id, "AuthenticationResults", result, player_id, token)
 
 remote func CreateAccount(username, password, player_id):
+	PlayerData.dbRefreshDatabase()	
 	var gateway_id = get_tree().get_rpc_sender_id()
 	var result
 	var message
-	if PlayerData.dbCheckUniqueUsername(username) == true:
+	if PlayerData.dbCheckUniqueUsername(username)[0] == true:
 		print("auth script found same username")
 		result = false
 		message = 2
@@ -70,16 +81,14 @@ remote func CreateAccount(username, password, player_id):
 		message = 3
 		var salt = GenerateSalt()
 		var hashed_password = GenerateHashedPassword(password, salt)
-		####Database shiz
-		PlayerData.dbNewPlayer(username, password, salt)
-		####
+		PlayerData.dbNewPlayer(username, hashed_password, salt)
+
 	
 	rpc_id(gateway_id, "CreateAccountResults", result, player_id, message)
 
 func GenerateSalt():
 	randomize()
 	var salt = str(randi()).sha256_text()
-	print("Salt: " + salt)
 	return salt
 
 func GenerateHashedPassword(password, salt):

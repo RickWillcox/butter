@@ -564,25 +564,25 @@ blend_mode = 1
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=39]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=41]
+[sub_resource type="AnimationNodeStateMachineTransition" id=40]
 switch_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=42]
+[sub_resource type="AnimationNodeStateMachineTransition" id=41]
 
-[sub_resource type="AnimationNodeStateMachine" id=43]
+[sub_resource type="AnimationNodeStateMachine" id=42]
 states/Idle/node = SubResource( 18 )
 states/Idle/position = Vector2( 346, 117 )
 states/Melee_Attack/node = SubResource( 27 )
 states/Melee_Attack/position = Vector2( 512, 227 )
 states/Walk/node = SubResource( 36 )
 states/Walk/position = Vector2( 616, 105 )
-transitions = [ "Idle", "Walk", SubResource( 37 ), "Walk", "Idle", SubResource( 38 ), "Walk", "Melee_Attack", SubResource( 39 ), "Melee_Attack", "Idle", SubResource( 41 ), "Idle", "Melee_Attack", SubResource( 42 ) ]
+transitions = [ "Idle", "Walk", SubResource( 37 ), "Walk", "Idle", SubResource( 38 ), "Walk", "Melee_Attack", SubResource( 39 ), "Melee_Attack", "Idle", SubResource( 40 ), "Idle", "Melee_Attack", SubResource( 41 ) ]
 start_node = "Idle"
 graph_offset = Vector2( -33, 54 )
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=44]
+[sub_resource type="AnimationNodeStateMachinePlayback" id=43]
 
-[sub_resource type="CapsuleShape2D" id=45]
+[sub_resource type="CapsuleShape2D" id=44]
 radius = 5.44235
 height = 16.7909
 
@@ -600,7 +600,7 @@ shape = SubResource( 1 )
 texture = ExtResource( 2 )
 hframes = 4
 vframes = 12
-frame = 34
+frame = 36
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Idle_Down = SubResource( 2 )
@@ -617,10 +617,10 @@ anims/Walk_Right = SubResource( 12 )
 anims/Walk_Up = SubResource( 13 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 43 )
+tree_root = SubResource( 42 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
-parameters/playback = SubResource( 44 )
+parameters/playback = SubResource( 43 )
 parameters/Idle/blend_position = Vector2( 2.04137, 4.67953 )
 parameters/Melee_Attack/blend_position = Vector2( 0, 0.984127 )
 parameters/Walk/blend_position = Vector2( 0, 0.836207 )
@@ -641,5 +641,5 @@ position = Vector2( 0, 13.5153 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Position2D/Area2D"]
 rotation = 1.5708
-shape = SubResource( 45 )
+shape = SubResource( 44 )
 disabled = true
