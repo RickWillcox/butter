@@ -17,7 +17,7 @@ func _ready():
 	$FloatAroundAnimation.play("Float")
 		#hide health bar and hitboes here later
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	pass
 	
 func MoveEnemy(new_position):
@@ -34,7 +34,6 @@ func Health(health):
 			OnDeath()
 			
 func HealthBarUpdate(): #15 25min
-	var percentage_hp = int((float(current_hp) / max_hp) * 100)
 	$HealthBar.value = current_hp
 
 		

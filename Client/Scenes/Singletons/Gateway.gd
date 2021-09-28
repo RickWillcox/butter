@@ -27,8 +27,8 @@ func _process(delta):
 		return;
 	custom_multiplayer.poll();
 
-func SetIP(local):
-	pass
+#func SetIP(local):
+#	pass
 #	if local:
 #		Server.ip = "127.0.0.1"
 #		ip = local_ip

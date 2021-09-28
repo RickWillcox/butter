@@ -10,7 +10,6 @@ onready var account_created_message_screen = get_node("AccountCreatedMessageScre
 onready var create_account_screen = self
 
 func _ready():
-	print("create acc")
 	self.visible = false
 
 func _on_CreateAccountButton_pressed():
@@ -23,9 +22,7 @@ func _on_CreateAccountButton_pressed():
 		create_account_button.disabled = true
 		var username = username_input.get_text()
 		var password = userpassword_input.get_text()
-		var repeat_password = userpasswordrepeat_input.get_text()
 		print("Attempting to Create Account")	
-
 		Gateway.ConnectToServer(username, password, true)
 		
 

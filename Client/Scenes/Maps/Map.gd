@@ -39,7 +39,7 @@ func UpdateWorldState(world_state):
 		last_world_state = world_state["T"]
 		world_state_buffer.append(world_state)
 		
-func _physics_process(delta):
+func _physics_process(_delta):
 	var render_time = Server.client_clock - interpolation_offset
 	if world_state_buffer.size() > 1:
 		if printed_world_state == false:

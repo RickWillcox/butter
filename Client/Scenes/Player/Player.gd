@@ -38,13 +38,13 @@ func _physics_process(delta):
 			AttackingAction(delta)
 	DefinePlayerState()
 			
-func IdleAction(delta):
+func IdleAction(_delta):
 	CheckIfAttack()
 	animation_mode.travel("Idle")
 	if joystick.currentForce != Vector2(0,0) and player_action != ATTACKING:
 		player_action = MOVING
 	
-func MovingAction(delta):
+func MovingAction(_delta):
 	CheckIfAttack()
 	animation_mode.travel("Walk")
 	movement = position.direction_to(position + (joystick.currentForce * 1000)) * speed
@@ -52,7 +52,7 @@ func MovingAction(delta):
 		player_action = IDLE
 	movement = move_and_slide(movement)
 	
-func AttackingAction(delta):
+func AttackingAction(_delta):
 	animation_mode.travel("Melee_Attack") 
 	player_action = IDLE
 	yield(get_tree().create_timer(0.2), "timeout")

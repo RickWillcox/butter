@@ -20,7 +20,7 @@ func _ready():
 	if AnalogTapToShowContainer == "":
 		AnalogTapToShowContainer = get_parent()
 	
-	map_analog_dpad()
+#	map_analog_dpad()
 	set_process_input(true)
 	squaredHalfSizeLength = halfSize.x * halfSize.y
 	
@@ -134,11 +134,11 @@ func set_tap_to_show(value):
 		
 func sendSignal2Listener():
 	get_tree().call_group("JoyStick", "analog_signal_change", currentForce, self.get_name())
-	if mapAnalogToDpad:
-		map_analog_dpad()
+#	if mapAnalogToDpad:
+#		map_analog_dpad()
 
-func map_analog_dpad():
-	Input.action_press("ui_left") if currentForce.x < -0.2 else Input.action_release("ui_left")
-	Input.action_press("ui_right") if currentForce.x > 0.2 else Input.action_release("ui_right")
-	Input.action_press("ui_down") if currentForce.y < -0.2 else Input.action_release("ui_down")
-	Input.action_press("ui_up") if currentForce.y > 0.2 else Input.action_release("ui_up")
+#func map_analog_dpad():
+#	Input.action_press("ui_left") if currentForce.x < -0.2 else Input.action_release("ui_left")
+#	Input.action_press("ui_right") if currentForce.x > 0.2 else Input.action_release("ui_right")
+#	Input.action_press("ui_down") if currentForce.y < -0.2 else Input.action_release("ui_down")
+#	Input.action_press("ui_up") if currentForce.y > 0.2 else Input.action_release("ui_up")

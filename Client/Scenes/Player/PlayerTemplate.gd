@@ -6,7 +6,7 @@ var state = "Idle"
 onready var animation_tree = get_node("AnimationTree")
 onready var animation_mode = animation_tree.get("parameters/playback")
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if not attack_dict == {}:
 		Attack()
 
