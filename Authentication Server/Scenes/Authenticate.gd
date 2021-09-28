@@ -9,7 +9,6 @@ var salt
 
 func _ready():
 	StartServer()
-	PlayerData.dbRefreshDatabase()	
 		
 func StartServer():
 	network.create_server(port, max_servers)

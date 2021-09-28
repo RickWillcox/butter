@@ -8,21 +8,10 @@
 
 config_version=4
 
-_global_script_classes=[ {
-"base": "Control",
-"class": "Joystick",
-"language": "GDScript",
-"path": "res://Assets/JoyStick/Joystick.gd"
-} ]
-_global_script_class_icons={
-"Joystick": ""
-}
-
 [application]
 
 config/name="Client"
 run/main_scene="res://Scenes/Main/SceneHandler.tscn"
-config/icon="res://icon.png"
 
 [autoload]
 
