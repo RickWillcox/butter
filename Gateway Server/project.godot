@@ -12,7 +12,8 @@ config_version=4
 
 config/name="Gateway Server"
 run/main_scene="res://Scenes/Main/LoginServer.tscn"
-config/icon="res://icon.png"
+config/icon="res://Assets/G.png"
+config/windows_native_icon="res://Assets/G.ico"
 
 [autoload]
 

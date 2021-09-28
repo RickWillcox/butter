@@ -12,7 +12,8 @@ config_version=4
 
 config/name="Authentication Server"
 run/main_scene="res://Scenes/Authenticate.tscn"
-config/icon="res://icon.png"
+config/icon="res://assets/a.png"
+config/windows_native_icon="res://assets/a.ico"
 
 [autoload]
 
