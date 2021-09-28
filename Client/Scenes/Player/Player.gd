@@ -8,6 +8,7 @@ onready var player_stats_panel = get_node("../../GUI/PlayerStats")
 onready var login_screen_panel = get_node("../../GUI/LoginScreen")
 
 
+
 var max_speed = 200
 var speed = 180
 var destination = Vector2()
@@ -19,12 +20,14 @@ var blend_position = Vector2.ZERO
 
 
 
+
 enum {
 	ATTACKING, IDLE, MOVING
 }
 
 func _ready():
-	set_physics_process(false)
+#	set_physics_process(false)
+	get_node("PlayerName").text = Globals.player_name
 
 
 func _physics_process(delta):
@@ -73,8 +76,6 @@ func CheckIfAttack():
 func DefinePlayerState():
 	player_state = {"T": Server.client_clock, "P": get_global_position(), "A": blend_position}
 	Server.SendPlayerState(player_state)
-
-
 
 
 

@@ -16,6 +16,7 @@ func _on_Login_pressed():
 		#popup and stop
 		print("Please provide valid userID and password")
 	else:
+		Globals.player_name = username_input.text
 		login_button.disabled = true
 		var username = username_input.get_text()
 		var password = userpassword_input.get_text()

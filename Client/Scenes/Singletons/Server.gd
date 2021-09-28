@@ -81,7 +81,8 @@ remote func FetchToken():
 remote func ReturnTokenVerificationResults(result):
 	if result == true:
 		get_node("../SceneHandler/Map/GUI/LoginScreen").queue_free()
-		get_node("../SceneHandler/Map/YSort/Player").set_physics_process(true)
+		get_node("../SceneHandler/Map").SpawnSelf()
+#		get_node("../SceneHandler/Map/YSort/Player").set_physics_process(true)
 		#print("Successful Token Verification")
 	else:
 		#print("Login Failed please try again")

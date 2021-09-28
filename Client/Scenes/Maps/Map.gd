@@ -2,10 +2,18 @@ extends Node2D
 
 var enemy_spawn = preload("res://Scenes/Enemies/Slime.tscn")
 var player_spawn = preload("res://Scenes/Player/PlayerTemplate.tscn")
+##
+var client_player = preload("res://Scenes/Player/Player.tscn")
+##
 var last_world_state = 0
 var world_state_buffer = []
 const interpolation_offset = 20
 var printed_world_state = false
+
+func SpawnSelf():
+	var client_player_instance = client_player.instance()
+	client_player_instance.position = Vector2(250,250)
+	get_node("YSort").add_child(client_player_instance)
 
 func SpawnNewPlayer(player_id, spawn_position):
 	if get_tree().get_network_unique_id() == player_id:
