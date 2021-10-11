@@ -2,7 +2,7 @@ extends Node
 
 var enemy_id_counter = 1 
 var enemy_maximum = 3
-var enemy_types = ["Spooky Man"] #list of enemies that spawn
+var enemy_types = ["Slime", "Mino"] #list of enemies that spawn
 var enemy_spawn_points = [Vector2 (250, 225), Vector2 (500, 150), Vector2 (570, 470)]
 var open_locations = [0,1,2]
 var occupied_locations = {}
@@ -10,6 +10,8 @@ var enemy_list = {}
 
 var ore_list = ServerData.mining_data
 var ore_types = ["Gold Ore"]
+
+
 
 
 func _ready(): 
@@ -29,8 +31,8 @@ func SpawnEnemy():
 		var location = enemy_spawn_points[open_locations[rng_location_index]]  #select random location to spawn at
 		occupied_locations[enemy_id_counter] = open_locations[rng_location_index]
 		open_locations.remove(rng_location_index)
-		enemy_list[enemy_id_counter] = {"EnemyType": type, "EnemyLocation": location, "EnemyCurrentHealth": 500, "EnemyMaxHealth": 500, "EnemyState": "Idle", "time_out": 1}
-		get_parent().get_node("ServerMap").SpawnEnemy(enemy_id_counter, location)
+		enemy_list[enemy_id_counter] = {"EnemyType": type, "EnemyLocation": location, "EnemyCurrentHealth": EnemyData.enemies[type]["MaxHealth"], "EnemyMaxHealth": EnemyData.enemies[type]["MaxHealth"], "EnemyState": "Idle", "time_out": 1}
+		get_parent().get_node("ServerMap").SpawnEnemy(enemy_id_counter, location, type)
 		enemy_id_counter += 1
 	for enemy in enemy_list.keys():
 		if enemy_list[enemy]["EnemyState"] == "Dead":

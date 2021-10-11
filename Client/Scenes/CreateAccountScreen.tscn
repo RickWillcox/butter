@@ -5,8 +5,8 @@
 [ext_resource path="res://Assets/Textures/button_pressed.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Textures/border1.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Fonts/EvilEmpire-4BBVK.ttf" type="DynamicFontData" id=5]
-[ext_resource path="res://Scenes/CreateAccountScreen.gd" type="Script" id=6]
-[ext_resource path="res://Scenes/AccountCreatedMessageScreen.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/AccountCreatedMessageScreen.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/CreateAccountScreen.gd" type="Script" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 41
@@ -35,7 +35,7 @@ margin_left = -640.0
 margin_top = -360.0
 margin_right = 640.0
 margin_bottom = 360.0
-script = ExtResource( 6 )
+script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -215,7 +215,7 @@ position = Vector2( 640.846, 354.342 )
 scale = Vector2( 0.248, 0.232 )
 texture = ExtResource( 4 )
 
-[node name="AccountCreatedMessageScreen" parent="." instance=ExtResource( 7 )]
+[node name="AccountCreatedMessageScreen" parent="." instance=ExtResource( 6 )]
 visible = false
 
 [connection signal="pressed" from="Background/VBoxContainer/CreateAccountButton" to="." method="_on_CreateAccountButton_pressed"]

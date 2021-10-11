@@ -135,14 +135,13 @@ tracks/0/keys = {
 }
 
 [node name="Slime" type="KinematicBody2D"]
-position = Vector2( 100.113, 108.122 )
 scale = Vector2( 3, 3 )
 collision_layer = 16
 script = ExtResource( 5 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 material = ExtResource( 9 )
-position = Vector2( -1.824, -9.12415 )
+position = Vector2( 0, -9.124 )
 scale = Vector2( 0.503879, 0.503879 )
 frames = SubResource( 6 )
 animation = "Animation"

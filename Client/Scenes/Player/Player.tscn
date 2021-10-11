@@ -609,7 +609,7 @@ shape = SubResource( 1 )
 texture = ExtResource( 2 )
 hframes = 4
 vframes = 12
-frame = 33
+frame = 35
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Idle_Down = SubResource( 2 )
@@ -665,3 +665,6 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true

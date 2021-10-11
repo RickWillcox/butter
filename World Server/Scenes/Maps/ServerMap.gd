@@ -1,12 +1,18 @@
 extends Node2D
 
 
-var enemy_spawn = preload("res://Scenes/ServerEnemy.tscn")
+var slime = preload("res://Scenes/Enemies/Slime.tscn")
+var mino = preload("res://Scenes/Enemies/Slime.tscn") #change to mino
 var melee_attack = preload("res://Scenes/Player/Melee_Attack.tscn")
 
 # warning-ignore:unused_argument
 
-func SpawnEnemy(enemy_id, location):
+func SpawnEnemy(enemy_id, location, type):
+	var enemy_spawn
+	if type == "Slime":
+		enemy_spawn = slime
+	elif type == "Mino":
+		enemy_spawn = mino	
 	var enemy_spawn_instance = enemy_spawn.instance()
 	enemy_spawn_instance.name = str(enemy_id)
 	enemy_spawn_instance.position = location

@@ -5,6 +5,7 @@ var awaiting_verification = {}
 onready var main_interface = get_parent()
 onready var player_container_scene = preload("res://Scenes/Instances/PlayerContainer.tscn")
 
+
 func start(player_id):
 	#16:13 #6
 	awaiting_verification[player_id] = {"Timestamp": OS.get_unix_time()}
@@ -35,8 +36,8 @@ func CreatePlayerContainer(player_id):
 	FillPlayerContainer(player_container)
 
 func FillPlayerContainer(player_container):
-	player_container.player_stats = ServerData.test_data.Stats
-	
+#	player_container.player_stats = ServerData.test_data.Stats
+	pass
 
 func _on_VerificationExpiration_timeout():
 	var current_time = OS.get_unix_time()

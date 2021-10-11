@@ -33,7 +33,7 @@ func _OnConnectionFailed():
 	
 func _OnConnectionSucceeded():
 	print("Successfully connected to Game Hub server")
-#	GameServer.StartServer()
+#	gameserver.StartServer()
 
 remote func ReceiveLoginToken(token):
 	gameserver.expected_tokens.append(token)
