@@ -4,7 +4,7 @@ var awaiting_verification = {}
 
 onready var main_interface = get_parent()
 onready var player_container_scene = preload("res://Scenes/Instances/PlayerContainer.tscn")
-
+onready var ysort_players = get_parent().get_node("ServerMap/YSort/Players")
 
 func start(player_id):
 	#16:13 #6
@@ -31,9 +31,9 @@ func Verify(player_id, token):
 func CreatePlayerContainer(player_id):
 	var new_player_container = player_container_scene.instance()
 	new_player_container.name = str(player_id)
-	get_parent().add_child(new_player_container, true)
-	var player_container = get_node("../" + str(player_id))
-	FillPlayerContainer(player_container)
+	ysort_players.add_child(new_player_container, true)
+#	var player_container = get_node(str(ysort_players) + "/" + str(player_id))
+#	FillPlayerContainer(player_container)
 
 func FillPlayerContainer(player_container):
 #	player_container.player_stats = ServerData.test_data.Stats

@@ -354,7 +354,7 @@ script = ExtResource( 4 )
 texture = ExtResource( 1 )
 hframes = 9
 vframes = 20
-frame = 2
+frame = 27
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 "anims/Attack Spin Left" = SubResource( 1 )
@@ -369,7 +369,6 @@ frame = 2
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 37 )
 anim_player = NodePath("../AnimationPlayer")
-active = true
 parameters/playback = SubResource( 38 )
 parameters/AttackSpin/blend_position = Vector2( 0, 0 )
 parameters/AttackSwing/blend_position = Vector2( -0.0983093, 0.903615 )
@@ -383,7 +382,6 @@ position = Vector2( -2.99661, 4.68221 )
 shape = SubResource( 39 )
 
 [node name="Position2D" type="Position2D" parent="."]
-rotation = 3.14159
 
 [node name="Area2D" type="Area2D" parent="Position2D"]
 
@@ -397,6 +395,7 @@ disabled = true
 [node name="CollisionPolygon2D" type="CollisionShape2D" parent="Position2D/Area2D"]
 modulate = Color( 0.937255, 0.0313726, 0.0313726, 1 )
 shape = SubResource( 41 )
+disabled = true
 
 [node name="WanderController" parent="." instance=ExtResource( 2 )]
 

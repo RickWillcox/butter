@@ -101,6 +101,7 @@ remote func ReceivePlayerState(player_state):
 			player_state_collection[player_id] = player_state #replace the player state in collection
 	else:
 		player_state_collection[player_id] = player_state #add player state to the collection
+	print(player_state_collection)
 	
 func SendWorldState(world_state): #in case of maps or chunks you will want to track player collection and send accordingly
 	rpc_unreliable_id(0, "ReceiveWorldState", world_state)

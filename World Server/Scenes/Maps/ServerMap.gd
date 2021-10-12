@@ -28,6 +28,8 @@ func SpawnMelee(player_id, blend_position, player_position):
 func SpawnOre(ore_id, location):
 	print("ore spawned")
 	
+func SpawnPlayer(player_id, location):
+	pass
 	
 	
 

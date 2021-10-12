@@ -51,8 +51,6 @@ func ConnectToServer(_username, _password, _new_account):
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(network)
 	
-	
-	
 	network.connect("connection_succeeded", self, "_OnConnectionSucceeded")	
 	network.connect("connection_failed", self, "_OnConnectionFailed")
 	
