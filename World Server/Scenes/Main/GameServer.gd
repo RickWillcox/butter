@@ -35,6 +35,9 @@ func StartServer():
 	network.connect("peer_connected", self, "_Peer_Connected")
 	network.connect("peer_disconnected", self, "_Peer_Disconnected")	
 	print("Starting Client>World Server")
+
+func _process(delta: float) -> void:
+	pass
 	
 func _Peer_Connected(player_id):
 	print("User: " + str(player_id) + " connected")
@@ -42,10 +45,12 @@ func _Peer_Connected(player_id):
 	
 func _Peer_Disconnected(player_id):
 	print("User: " + str(player_id) + " disconnected")
-	if has_node(str(player_id)):
-		get_node(str(player_id)).queue_free()
+	if get_node("ServerMap/YSort/Players").has_node(str(player_id)):
+		get_node("ServerMap/YSort/Players/" + str(player_id)).queue_free()
+		print(player_id)
 		player_state_collection.erase(player_id)
 		rpc_id(0, "DespawnPlayer", player_id)
+		
 
 #Attacking
 remote func cw_MeleeAttack(blend_position):
@@ -101,7 +106,7 @@ remote func ReceivePlayerState(player_state):
 			player_state_collection[player_id] = player_state #replace the player state in collection
 	else:
 		player_state_collection[player_id] = player_state #add player state to the collection
-	print(player_state_collection)
+	
 	
 func SendWorldState(world_state): #in case of maps or chunks you will want to track player collection and send accordingly
 	rpc_unreliable_id(0, "ReceiveWorldState", world_state)

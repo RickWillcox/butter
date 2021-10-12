@@ -1,8 +1,8 @@
 extends KinematicBody2D
 
 
-var max_hp	= 100
-var current_hp = 50
+var max_hp	= 9000
+var current_hp = 9000
 var state
 var type
 var dead = false

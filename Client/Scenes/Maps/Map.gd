@@ -40,6 +40,7 @@ func SpawnNewEnemy(enemy_id, enemy_dict):
 
 func DespawnPlayer(player_id):
 	yield(get_tree().create_timer(0.3), "timeout")
+	print(player_id)
 	get_node("YSort/OtherPlayers/" + str(player_id)).queue_free()
 
 func UpdateWorldState(world_state):
