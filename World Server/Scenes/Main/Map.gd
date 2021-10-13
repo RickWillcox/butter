@@ -31,7 +31,13 @@ func SpawnEnemy():
 		var location = enemy_spawn_points[open_locations[rng_location_index]]  #select random location to spawn at
 		occupied_locations[enemy_id_counter] = open_locations[rng_location_index]
 		open_locations.remove(rng_location_index)
-		enemy_list[enemy_id_counter] = {"EnemyType": type, "EnemyLocation": location, "EnemyCurrentHealth": EnemyData.enemies[type]["MaxHealth"], "EnemyMaxHealth": EnemyData.enemies[type]["MaxHealth"], "EnemyState": "Idle", "time_out": 1}
+		enemy_list[enemy_id_counter] = {
+		 "EnemyType": type,
+		 "EnemyLocation": location,
+		 "EnemyCurrentHealth": EnemyData.enemies[type]["MaxHealth"],
+		 "EnemyMaxHealth": EnemyData.enemies[type]["MaxHealth"],
+		 "EnemyState": "Idle",
+		 "time_out": 1}
 		get_parent().get_node("ServerMap").SpawnEnemy(enemy_id_counter, location, type)
 		enemy_id_counter += 1
 	for enemy in enemy_list.keys():
@@ -42,8 +48,6 @@ func SpawnEnemy():
 				enemy_list[enemy]["time_out"] = enemy_list[enemy]["time_out"] -1
 
 func UpdateEnemyPosition(name):
-	if enemy_list.size() > 2:
-		print(enemy_list[name])
 	pass
 				
 func EnemyMeleeHit(enemy_id, damage):

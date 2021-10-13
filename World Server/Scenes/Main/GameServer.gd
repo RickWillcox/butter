@@ -21,6 +21,7 @@ var player_state_collection = {}
 
 
 func _ready():
+	OS.set_window_position(Vector2(675,0))
 	print("Ready function called")
 	StartServer()
 	print("finished Client>World Server function")

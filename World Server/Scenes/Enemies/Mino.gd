@@ -5,7 +5,7 @@ export var MAX_SPEED = 250
 export var FRICTION = 200
 export var WANDER_TARGET_RANGE = 5
 
-enum{
+enum e{
 	IDLE, WANDER, CHASE, ATTACK
 }
 
@@ -17,7 +17,7 @@ onready var animation_tree = $MinoAnimationTree
 onready var animation_state = $MinoAnimationTree.get("parameters/playback")
 onready var wander_controller = $WanderController
 onready var player_detection_zone = $PlayerDetectionZone
-onready var map_enemy_list =  get_node("../Map").enemy_list
+onready var map_enemy_list = get_node("../../../../Map")
 
 var velocity = Vector2.ZERO
 var knockback = Vector2.ZERO
@@ -38,7 +38,8 @@ func _ready():
 	animation_tree.active = true
 	
 func _physics_process(delta):
-	map_enemy_list[name]["EnemyLocation"] == position
+	map_enemy_list.enemy_list[int(name)]["EnemyLocation"] = position
+	map_enemy_list.enemy_list[int(name)]["EnemyState"] = state
 	if previous_state != state:
 		previous_state = state
 	blend_position()

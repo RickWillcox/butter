@@ -267,7 +267,7 @@ script = ExtResource( 4 )
 texture = ExtResource( 1 )
 hframes = 9
 vframes = 20
-frame = 27
+frame = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 "anims/Attack Spin Left" = SubResource( 1 )
@@ -282,6 +282,7 @@ frame = 27
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 37 )
 anim_player = NodePath("../AnimationPlayer")
+active = true
 parameters/playback = SubResource( 38 )
 parameters/AttackSpin/blend_position = Vector2( 0, 0 )
 parameters/AttackSwing/blend_position = Vector2( -0.0983093, 0.903615 )
