@@ -1,9 +1,7 @@
 extends Node2D
 
 
-#var slime = preload("res://Scenes/Enemies/Slime.tscn")
-var slime = preload("res://Scenes/Enemies/Mino.tscn")
-
+var slime = preload("res://Scenes/Enemies/Slime.tscn")
 var mino = preload("res://Scenes/Enemies/Mino.tscn") #change to mino
 var melee_attack = preload("res://Scenes/Player/Melee_Attack.tscn")
 

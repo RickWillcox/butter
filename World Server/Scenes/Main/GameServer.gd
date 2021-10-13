@@ -104,6 +104,7 @@ remote func ReceivePlayerState(player_state):
 	if player_state_collection.has(player_id): #check if player is in current collection
 		if player_state_collection[player_id]["T"] < player_state["T"]: #check if player state is the latest one
 			player_state_collection[player_id] = player_state #replace the player state in collection
+		#Check for leet hacks
 	else:
 		player_state_collection[player_id] = player_state #add player state to the collection
 	

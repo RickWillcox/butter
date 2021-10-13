@@ -1,7 +1,7 @@
 extends Node
 
 var enemy_id_counter = 1 
-var enemy_maximum = 1
+var enemy_maximum = 3
 var enemy_types = ["Slime", "Mino"] #list of enemies that spawn
 var enemy_spawn_points = [Vector2 (250, 225), Vector2 (500, 150), Vector2 (570, 470)]
 var open_locations = [0,1,2]
@@ -13,11 +13,14 @@ var ore_types = ["Gold Ore"]
 
 func _ready(): 
 	var timer = Timer.new()
-	timer.wait_time = 3
+	timer.wait_time = 1
 	timer.autostart = true
 	timer.connect("timeout", self, "SpawnEnemy")
 	self.add_child(timer)
-	
+
+func _physics_process(delta: float):
+		UpdateEnemyPosition(name)
+			
 func SpawnEnemy():
 	if enemy_list.size() >= enemy_maximum:
 		pass #maximum enemies already on the map
@@ -38,6 +41,10 @@ func SpawnEnemy():
 			else:
 				enemy_list[enemy]["time_out"] = enemy_list[enemy]["time_out"] -1
 
+func UpdateEnemyPosition(name):
+	if enemy_list.size() > 2:
+		print(enemy_list[name])
+	pass
 				
 func EnemyMeleeHit(enemy_id, damage):
 	if enemy_list[enemy_id]["EnemyCurrentHealth"] <= 0:

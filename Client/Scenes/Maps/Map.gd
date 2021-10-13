@@ -1,10 +1,10 @@
 extends Node2D
 
-var enemy_spawn = preload("res://Scenes/Enemies/Slime.tscn")
+var enemy_spawn
+var slime = preload("res://Scenes/Enemies/Slime.tscn")
+var mino = preload("res://Scenes/Enemies/Mino.tscn")
 var player_spawn = preload("res://Scenes/Player/PlayerTemplate.tscn")
-##
 var client_player = preload("res://Scenes/Player/Player.tscn")
-##
 var last_world_state = 0
 var world_state_buffer = []
 const interpolation_offset = 20
@@ -28,7 +28,11 @@ func SpawnNewPlayer(player_id, spawn_position):
 			get_node("YSort/OtherPlayers").add_child(new_player)
 #
 func SpawnNewEnemy(enemy_id, enemy_dict):
-	print("Spawning enemy")
+	var enemy_type = enemy_dict["EnemyType"]
+	if enemy_type == "Slime":
+		 enemy_spawn = slime
+	elif enemy_type == "Mino":
+		enemy_spawn = mino
 	var new_enemy = enemy_spawn.instance()
 	new_enemy.position = enemy_dict["EnemyLocation"]
 	new_enemy.max_hp = enemy_dict["EnemyMaxHealth"]

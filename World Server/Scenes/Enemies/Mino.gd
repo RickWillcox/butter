@@ -17,6 +17,7 @@ onready var animation_tree = $MinoAnimationTree
 onready var animation_state = $MinoAnimationTree.get("parameters/playback")
 onready var wander_controller = $WanderController
 onready var player_detection_zone = $PlayerDetectionZone
+onready var map_enemy_list =  get_node("../Map").enemy_list
 
 var velocity = Vector2.ZERO
 var knockback = Vector2.ZERO
@@ -29,6 +30,7 @@ var attacking = false
 var previous_state = IDLE
 var attack_type
 
+
 func _ready():
 	randomize()
 	rng = RandomNumberGenerator.new()
@@ -36,6 +38,7 @@ func _ready():
 	animation_tree.active = true
 	
 func _physics_process(delta):
+	map_enemy_list[name]["EnemyLocation"] == position
 	if previous_state != state:
 		previous_state = state
 	blend_position()
@@ -45,7 +48,6 @@ func _physics_process(delta):
 			velocity = velocity.move_toward(Vector2.ZERO, FRICTION)
 			seek_player()
 			time_left_wander_controller()
-			
 		WANDER:
 			animation_state.travel("Run")
 			seek_player()
@@ -76,10 +78,8 @@ func _physics_process(delta):
 			attacking = true
 			if attack_type == 0:
 				animation_state.travel("AttackSwing")
-				print("swing")
 			elif attack_type == 1:
 				animation_state.travel("AttackSpin")
-				print("spin")
 			yield(get_tree().create_timer(1.2),"timeout")
 			attacking = false
 			state = IDLE
@@ -93,7 +93,7 @@ func pick_random_state(state_list):
 func seek_player():
 	if player_detection_zone.can_see_player():
 		state = CHASE
-	
+		
 func blend_position():
 	var old_blend_position = blend_position
 	blend_position = wander_controller.target_position
