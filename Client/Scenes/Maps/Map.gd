@@ -85,7 +85,9 @@ func _physics_process(_delta):
 					continue
 				if get_node("YSort/Enemies").has_node(str(enemy)): #does enemy exist
 					var new_position = lerp(world_state_buffer[1]["Enemies"][enemy]["EnemyLocation"], world_state_buffer[2]["Enemies"][enemy]["EnemyLocation"], inperpolation_factor)
-					get_node("YSort/Enemies/" + str(enemy)).MoveEnemy(new_position)
+					var state = world_state_buffer[1]["Enemies"][enemy]["EnemyState"]
+					var attack_type = world_state_buffer[1]["Enemies"][enemy]["AttackType"]
+					get_node("YSort/Enemies/" + str(enemy)).MoveEnemy(new_position, state, attack_type)
 					get_node("YSort/Enemies/" + str(enemy)).Health(world_state_buffer[1]["Enemies"][enemy]["EnemyCurrentHealth"])
 				else:
 					SpawnNewEnemy(enemy, world_state_buffer[2]["Enemies"][enemy])

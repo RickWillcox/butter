@@ -18,11 +18,10 @@ var blend_position = Vector2.ZERO
 var facing_blend_position = Vector2.ZERO
 var rng
 var state = IDLE
-var facing = RIGHT
 var attacking = false
 var current_position
 var old_position = Vector2(0,0)
-
+var attack_type = ""
 var max_hp	= 9000
 var current_hp = 9000
 var type
@@ -33,29 +32,35 @@ func ready():
 	$HealthBar.value = current_hp
 
 func _physics_process(delta):
+	animation_tree.active = true
 	blend_position()
 	match state:
 		IDLE:
+			animation_state.travel("Idle")
 			print("idle")
 		WANDER:
+			animation_state.travel("Run")
 			print("wander")
 		CHASE:
+			animation_state.travel("Run")
 			print("chase")
 		ATTACK:
-			print("attack")
+			animation_state.travel(attack_type)
+			print("attack: ")
 		DEAD:
 			queue_free()
 
-func MoveEnemy(new_position):
-	var facing = ""
+func MoveEnemy(new_position, server_state, server_attack_type):
+	var state = server_state
 	set_position(new_position)
 	if old_position.x > new_position.x:
 		facing_blend_position = Vector2(-2,0)
-		facing = "Left"
+		state = WANDER
 	elif old_position.x < new_position.x:
 		facing_blend_position = Vector2(2,0)
-		facing = "Right"
-	else:
+		state = WANDER
+	elif not server_attack_type == attack_type:
+		state = ATTACK
 		pass
 	old_position = new_position
 	
