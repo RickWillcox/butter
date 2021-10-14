@@ -40,7 +40,8 @@ func SpawnNewEnemy(enemy_id, enemy_dict):
 	new_enemy.type = enemy_dict["EnemyType"]
 	new_enemy.state = enemy_dict["EnemyState"]
 	new_enemy.name = str(enemy_id)
-	get_node("YSort/Enemies/").add_child(new_enemy, true)
+	if new_enemy.current_hp > 0:
+		get_node("YSort/Enemies/").add_child(new_enemy, true)
 
 func DespawnPlayer(player_id):
 	yield(get_tree().create_timer(0.3), "timeout")

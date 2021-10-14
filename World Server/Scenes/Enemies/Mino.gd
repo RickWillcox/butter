@@ -6,10 +6,10 @@ export var FRICTION = 200
 export var WANDER_TARGET_RANGE = 5
 
 enum e{
-	IDLE, WANDER, CHASE, ATTACK
+	IDLE, WANDER, CHASE, ATTACK, DEAD
 }
 
-var e_string = ["IDLE", "WANDER", "CHASE", "ATTACK"]
+var e_string = ["IDLE", "WANDER", "CHASE", "ATTACK", "DEAD"]
 
 enum{
 	LEFT, RIGHT
@@ -40,55 +40,58 @@ func _ready():
 	animation_tree.active = true
 	
 func _physics_process(delta):
-	map_enemy_list.enemy_list[int(name)]["EnemyLocation"] = position
-	map_enemy_list.enemy_list[int(name)]["EnemyState"] = e_string[state]
-	map_enemy_list.enemy_list[int(name)]["AttackType"] = attack_type[attack_type[2]]
-	if previous_state != state:
-		previous_state = state
-	blend_position()
-	match state:
-		e.IDLE:
-			animation_state.travel("Idle")
-			velocity = velocity.move_toward(Vector2.ZERO, FRICTION)
-			seek_player()
-			time_left_wander_controller()
-		e.WANDER:
-			animation_state.travel("Run")
-			seek_player()
-			time_left_wander_controller()
-			
-			var direction = global_position.direction_to(wander_controller.target_position)
-			velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION * delta)
-#			target position normalised to start movement
-
-			if global_position.distance_to(wander_controller.target_position) <= WANDER_TARGET_RANGE:
-				state = pick_random_state([e.IDLE, e.WANDER, e.ATTACK])
-				wander_controller.start_wander_timer(rand_range(1,3))
-				
-		e.CHASE:
-			var player = player_detection_zone.player
-			if player != null:
-				if global_position.distance_to(player.global_position) <= 25 and not attacking:
-					state = e.ATTACK
+	var enemy = map_enemy_list.enemy_list[int(name)]
+	if enemy["EnemyState"] == "Dead":
+		pass
+	else:
+		enemy["EnemyLocation"] = position
+		enemy["EnemyState"] = e_string[state]
+		enemy["AttackType"] = attack_type[attack_type[2]]
+		if previous_state != state:
+			previous_state = state
+		blend_position()
+		match state:
+			e.IDLE:
+				animation_state.travel("Idle")
+				velocity = velocity.move_toward(Vector2.ZERO, FRICTION)
+				seek_player()
+				time_left_wander_controller()
+			e.WANDER:
 				animation_state.travel("Run")
-				var direction = global_position.direction_to(player.global_position)
+				seek_player()
+				time_left_wander_controller()
+				
+				var direction = global_position.direction_to(wander_controller.target_position)
 				velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION * delta)
-			else:
+	#			target position normalised to start movement
+
+				if global_position.distance_to(wander_controller.target_position) <= WANDER_TARGET_RANGE:
+					state = pick_random_state([e.IDLE, e.WANDER, e.ATTACK])
+					wander_controller.start_wander_timer(rand_range(1,3))
+					
+			e.CHASE:
+				var player = player_detection_zone.player
+				if player != null:
+					if global_position.distance_to(player.global_position) <= 25 and not attacking:
+						state = e.ATTACK
+					animation_state.travel("Run")
+					var direction = global_position.direction_to(player.global_position)
+					velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION * delta)
+				else:
+					state = e.IDLE
+				
+			e.ATTACK:
+				if attacking == false: 
+					attack_type[2] = rng.randi_range(0,1)
+				attacking = true
+				if attack_type[2] == 0:
+					animation_state.travel(attack_type[0]) #attack swing
+				elif attack_type[2] == 1:
+					animation_state.travel(attack_type[1]) #attack spin
+				attacking = false
 				state = e.IDLE
-			
-		e.ATTACK:
-			if attacking == false: 
-				attack_type[2] = rng.randi_range(0,1)
-			attacking = true
-			if attack_type[2] == 0:
-				animation_state.travel(attack_type[0]) #attack swing
-			elif attack_type[2] == 1:
-				animation_state.travel(attack_type[1]) #attack spin
-			yield(get_tree().create_timer(1.2),"timeout")
-			attacking = false
-			state = e.IDLE
-			
-	velocity = move_and_slide(velocity)
+				
+		velocity = move_and_slide(velocity)
 		
 func pick_random_state(state_list):
 	state_list.shuffle()

@@ -32,6 +32,8 @@ func ready():
 	$HealthBar.value = current_hp
 
 func _physics_process(delta):
+	if current_hp <= 0:
+		queue_free()
 	animation_tree.active = true
 	blend_position()
 	match state:
@@ -82,9 +84,6 @@ func HealthBarUpdate(): #15 25min
 
 		
 func OnDeath():
-	$HealthBar.visible = false
-	$AnimationPlayer.stop()
-	yield(get_tree().create_timer(0.4), "timeout")
 	queue_free()
 	
 func blend_position():

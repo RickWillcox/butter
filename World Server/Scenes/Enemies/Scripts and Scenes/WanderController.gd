@@ -1,7 +1,7 @@
 extends Node2D
 
-export(int) var max_wander_range = 64
-export(int) var min_wander_range = 32
+export(int) var max_wander_range = 100
+export(int) var min_wander_range = 50
 
 onready var start_position = global_position
 onready var target_position = global_position
