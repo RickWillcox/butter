@@ -7,9 +7,11 @@ onready var create_account_screen = get_parent().get_node("CreateAccountScreen")
 onready var login_failed_message_screen = get_node("LoginFailedMessageScreen")
 
 var local = true
+export var auto_login = true
 
 func _ready():
-	pass #
+	if auto_login:
+		_on_Login_pressed()
 	
 func _on_Login_pressed():
 	if username_input.text == "" or userpassword_input.text == "":

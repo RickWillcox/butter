@@ -20,6 +20,7 @@ onready var animation_state = $MinoAnimationTree.get("parameters/playback")
 onready var wander_controller = $WanderController
 onready var player_detection_zone = $PlayerDetectionZone
 onready var map_enemy_list = get_node("../../../../Map")
+onready var attack_timer = get_node("AttackTimer")
 
 var velocity = Vector2.ZERO
 var knockback = Vector2.ZERO
@@ -30,7 +31,8 @@ var state = e.IDLE
 var facing = RIGHT
 var attacking = false
 var previous_state = e.IDLE
-var attack_type = ["AttackSwing", "AttackSpin", 0]
+var attack_type = ["AttackSwing", "AttackSpin", 0, "Not Attacking"]
+var attack_timer_started = false
 
 
 func _ready():
@@ -46,7 +48,8 @@ func _physics_process(delta):
 	else:
 		enemy["EnemyLocation"] = position
 		enemy["EnemyState"] = e_string[state]
-		enemy["AttackType"] = attack_type[attack_type[2]]
+		if not attacking:
+			enemy["AttackType"] = attack_type[3]
 		if previous_state != state:
 			previous_state = state
 		blend_position()
@@ -82,14 +85,16 @@ func _physics_process(delta):
 				
 			e.ATTACK:
 				if attacking == false: 
+					attack_timer.start()
 					attack_type[2] = rng.randi_range(0,1)
-				attacking = true
-				if attack_type[2] == 0:
-					animation_state.travel(attack_type[0]) #attack swing
-				elif attack_type[2] == 1:
-					animation_state.travel(attack_type[1]) #attack spin
-				attacking = false
-				state = e.IDLE
+					attacking = true					
+					if attack_type[2] == 0:
+						animation_state.travel(attack_type[0]) #attack swing
+						enemy["AttackType"] = attack_type[0]
+					elif attack_type[2] == 1:
+						animation_state.travel(attack_type[1]) #attack spin
+						enemy["AttackType"] = attack_type[1]
+					
 				
 		velocity = move_and_slide(velocity)
 		
@@ -121,3 +126,10 @@ func time_left_wander_controller():
 	if wander_controller.get_time_left() == 0:
 		state = pick_random_state([e.IDLE, e.WANDER, e.ATTACK])
 		wander_controller.start_wander_timer(rand_range(1,3))
+
+
+func _on_AttackTimer_timeout() -> void:
+	attacking = false
+	attack_timer.start()
+	state = e.IDLE
+	

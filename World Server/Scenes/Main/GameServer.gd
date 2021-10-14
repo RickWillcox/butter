@@ -21,7 +21,7 @@ var player_state_collection = {}
 
 
 func _ready():
-	OS.set_window_position(Vector2(675,0))
+	OS.set_window_position(Vector2(-1000,0))
 	print("Ready function called")
 	StartServer()
 	print("finished Client>World Server function")
@@ -63,7 +63,7 @@ remote func cw_MeleeAttack(blend_position):
 remote func FetchServerTime(client_time):
 	var player_id = get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "ReturnServerTime", OS.get_system_time_msecs(), client_time)	
-	print("FetchServerTime Done")
+
 	
 remote func DetermineLatency(client_time):
 	var player_id = get_tree().get_rpc_sender_id()

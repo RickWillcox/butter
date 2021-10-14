@@ -95,7 +95,7 @@ text = "Username"
 margin_top = 110.0
 margin_right = 301.0
 margin_bottom = 134.0
-text = "1"
+text = "shaka"
 
 [node name="MarginContainer2" type="MarginContainer" parent="Background/VBoxContainer"]
 margin_top = 138.0

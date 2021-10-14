@@ -68,5 +68,10 @@ modulate = Color( 1, 0, 0, 0.807843 )
 [node name="CollisionPolygon2D" parent="Hitboxes/Area2D" index="1"]
 modulate = Color( 0.937255, 0.0313726, 0.0313726, 0.317647 )
 
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[connection signal="timeout" from="AttackTimer" to="." method="_on_AttackTimer_timeout"]
+
 [editable path="PlayerDetectionZone"]
 [editable path="Hitboxes"]

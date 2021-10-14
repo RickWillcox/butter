@@ -2,7 +2,7 @@ extends Node
 
 var enemy_id_counter = 1 
 var enemy_maximum = 3
-var enemy_types = ["Mino", "Slime"] #list of enemies that spawn
+var enemy_types = ["Mino"] #list of enemies that spawn
 var enemy_spawn_points = [Vector2 (250, 225), Vector2 (500, 150), Vector2 (570, 470)]
 var open_locations = [0,1,2]
 var occupied_locations = {}
@@ -22,7 +22,6 @@ func _physics_process(delta: float):
 		UpdateEnemyPosition(name)
 			
 func SpawnEnemy():
-	print(enemy_list.size())
 	if enemy_list.size() >= enemy_maximum:
 		pass #maximum enemies already on the map
 	else:
@@ -62,8 +61,6 @@ func EnemyMeleeHit(enemy_id, damage):
 			enemy_list[enemy_id]["EnemyState"] = "Dead"
 			open_locations.append(occupied_locations[enemy_id])
 			occupied_locations.erase(enemy_id)
-			print("Enemy List size: ", enemy_list.size())
-			print("Occupied: ", occupied_locations)
 	
 			
 
