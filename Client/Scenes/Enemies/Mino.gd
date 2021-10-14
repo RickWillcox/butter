@@ -4,9 +4,6 @@ enum{
 	IDLE, WANDER, CHASE, ATTACK, DEAD
 }
 
-enum{
-	LEFT, RIGHT
-}
 
 onready var sprite = $Sprite
 onready var animation_player = $AnimationPlayer
@@ -26,6 +23,7 @@ var max_hp	= 9000
 var current_hp = 9000
 var type
 var dead = false
+var update_position = Vector2(0,0)
 
 func ready():
 	$HealthBar.max_value = max_hp
@@ -51,19 +49,22 @@ func _physics_process(delta):
 			print("attack: ")
 		DEAD:
 			queue_free()
+	print("old position: ", old_position)
+	print("update position: ", update_position)
+	print("    ")
+	print("    ")
+	
+	move_and_slide((Vector2(5,5)))
 
 func MoveEnemy(new_position, server_state, server_attack_type):
 	var state = server_state
-	set_position(new_position)
+	update_position = new_position
 	if old_position.x > new_position.x:
 		facing_blend_position = Vector2(-2,0)
 		state = WANDER
 	elif old_position.x < new_position.x:
 		facing_blend_position = Vector2(2,0)
 		state = WANDER
-	elif not server_attack_type == attack_type:
-		state = ATTACK
-		pass
 	old_position = new_position
 	
 	
