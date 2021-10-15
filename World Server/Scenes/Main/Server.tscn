@@ -28,6 +28,21 @@ script = ExtResource( 5 )
 
 [node name="ServerMap" parent="." instance=ExtResource( 6 )]
 
+[node name="Island" parent="ServerMap" index="0"]
+visible = true
+
+[node name="Grass" parent="ServerMap" index="1"]
+visible = true
+
+[node name="Terrain" parent="ServerMap" index="2"]
+visible = true
+
+[node name="Flowers" parent="ServerMap" index="3"]
+visible = true
+
+[node name="Houses" parent="ServerMap" index="4"]
+visible = true
+
 [connection signal="timeout" from="PlayerVerification/VerificationExpiration" to="PlayerVerification" method="_on_VerificationExpiration_timeout"]
 [connection signal="timeout" from="TokenExpiration" to="." method="_on_TokenExpiration_timeout"]
 

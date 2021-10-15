@@ -7,7 +7,7 @@ var player_spawn = preload("res://Scenes/Player/PlayerTemplate.tscn")
 var client_player = preload("res://Scenes/Player/Player.tscn")
 var last_world_state = 0
 var world_state_buffer = []
-const interpolation_offset = 20
+const interpolation_offset = 100
 var printed_world_state = false
 
 func SpawnSelf():
@@ -117,4 +117,16 @@ func _physics_process(_delta):
 					var new_position = world_state_buffer[1][player]["P"] + (position_delta * extrapolation_factor)
 					var animation_vector = world_state_buffer[1][player]["A"]
 					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, animation_vector)
+			for enemy in world_state_buffer[1]["Enemies"].keys(): 
+				if not world_state_buffer[1]["Enemies"].has(enemy): #if you find enemy in this world state but wasnt in previous world state (15ms before) do nothing #15 10:00
+					continue
+				if get_node("YSort/Enemies").has_node(str(enemy)): #does enemy exist
+					var position_delta = ((world_state_buffer[1]["Enemies"][enemy]["EnemyLocation"] - world_state_buffer[0]["Enemies"][enemy]["EnemyLocation"]))
+					var new_position = world_state_buffer[1]["Enemies"][enemy]["EnemyLocation"] + (position_delta * extrapolation_factor)
+					var state = world_state_buffer[1]["Enemies"][enemy]["EnemyState"]
+					var attack_type = world_state_buffer[1]["Enemies"][enemy]["AttackType"]
+					get_node("YSort/Enemies/" + str(enemy)).MoveEnemy(new_position, state, attack_type)
+					get_node("YSort/Enemies/" + str(enemy)).Health(world_state_buffer[1]["Enemies"][enemy]["EnemyCurrentHealth"])
+				else:
+					SpawnNewEnemy(enemy, world_state_buffer[1]["Enemies"][enemy])
 

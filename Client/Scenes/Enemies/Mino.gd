@@ -4,7 +4,6 @@ enum{
 	IDLE, WANDER, CHASE, ATTACK, DEAD
 }
 
-
 onready var sprite = $Sprite
 onready var animation_player = $AnimationPlayer
 onready var animation_tree = $AnimationTree
@@ -25,7 +24,6 @@ var current_hp = 9000
 var type
 var dead = false
 var update_position = Vector2(0,0)
-
 
 func ready():
 	$HealthBar.max_value = max_hp
@@ -55,7 +53,6 @@ func _physics_process(delta):
 		DEAD:
 			queue_free()
 	
-
 func MoveEnemy(new_position, server_state, server_attack_type):
 	state = server_state
 	if not server_attack_type == "Not Attacking":
@@ -87,8 +84,7 @@ func Health(health):
 			
 func HealthBarUpdate(): #15 25min
 	$HealthBar.value = current_hp
-
-		
+	
 func OnDeath():
 	queue_free()
 	
