@@ -9,7 +9,7 @@ var occupied_locations = {}
 var enemy_list = {}
 
 var ore_list = ServerData.mining_data
-var ore_types = ["Gold Ore"]
+var ore_types = ["G"]
 
 func _ready(): 
 	var timer = Timer.new()
@@ -32,33 +32,33 @@ func SpawnEnemy():
 		occupied_locations[enemy_id_counter] = open_locations[rng_location_index]
 		open_locations.remove(rng_location_index)
 		enemy_list[enemy_id_counter] = {
-		 "EnemyType": type,
-		 "EnemyLocation": location,
-		 "EnemyCurrentHealth": EnemyData.enemies[type]["MaxHealth"],
-		 "EnemyMaxHealth": EnemyData.enemies[type]["MaxHealth"],
-		 "EnemyState": "Idle",
-		 "time_out": 1,
-		 "AttackType": ""}
+		 "ET": type, #EnemyType
+		 "EL": location, #EnemyLocation
+		 "ECH": EnemyData.enemies[type]["MaxHealth"], #EnemyCurrentHealth
+		 "EMH": EnemyData.enemies[type]["MaxHealth"], #EnemyMaxHealth
+		 "ES": "Idle", #EnemyState
+		 "TO": 1, #time_out
+		 "EAT": ""} #EAttackType
 		get_parent().get_node("ServerMap").SpawnEnemy(enemy_id_counter, location, type)
 		enemy_id_counter += 1
 	for enemy in enemy_list.keys():
-		if enemy_list[enemy]["EnemyState"] == "Dead":
-			if enemy_list[enemy]["time_out"] == 0:
+		if enemy_list[enemy]["ES"] == "Dead":
+			if enemy_list[enemy]["TO"] == 0:
 				enemy_list.erase(enemy)
 			else:
-				enemy_list[enemy]["time_out"] = enemy_list[enemy]["time_out"] -1
+				enemy_list[enemy]["TO"] = enemy_list[enemy]["TO"] -1
 
 func UpdateEnemyPosition(name):
 	pass
 				
 func EnemyMeleeHit(enemy_id, damage):
-	if enemy_list[enemy_id]["EnemyCurrentHealth"] <= 0:
+	if enemy_list[enemy_id]["ECH"] <= 0:
 		pass
 	else:
-		enemy_list[enemy_id]["EnemyCurrentHealth"] = enemy_list[enemy_id]["EnemyCurrentHealth"] - damage
-		if enemy_list[enemy_id]["EnemyCurrentHealth"] <= 0:
+		enemy_list[enemy_id]["ECH"] = enemy_list[enemy_id]["ECH"] - damage
+		if enemy_list[enemy_id]["ECH"] <= 0:
 			get_node("/root/Server/ServerMap/YSort/Enemies/" + str(enemy_id)).queue_free()
-			enemy_list[enemy_id]["EnemyState"] = "Dead"
+			enemy_list[enemy_id]["ES"] = "Dead"
 			open_locations.append(occupied_locations[enemy_id])
 			occupied_locations.erase(enemy_id)
 	

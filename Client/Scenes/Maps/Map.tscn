@@ -1090,13 +1090,13 @@ __meta__ = {
 
 [node name="Ores" type="YSort" parent="YSort"]
 
-[node name="Ore1" parent="YSort/Ores" instance=ExtResource( 5 )]
+[node name="O1" parent="YSort/Ores" instance=ExtResource( 5 )]
 position = Vector2( 601.428, 488.088 )
 
-[node name="Ore2" parent="YSort/Ores" instance=ExtResource( 5 )]
+[node name="O2" parent="YSort/Ores" instance=ExtResource( 5 )]
 position = Vector2( 686.832, 488.088 )
 
-[node name="Ore3" parent="YSort/Ores" instance=ExtResource( 5 )]
+[node name="O3" parent="YSort/Ores" instance=ExtResource( 5 )]
 position = Vector2( 779.727, 488.088 )
 
 [node name="GUI" type="CanvasLayer" parent="."]
@@ -1112,4 +1112,4 @@ visible = false
 
 [node name="LoginScreen" parent="GUI" instance=ExtResource( 6 )]
 
-[editable path="YSort/Ores/Ore1"]
+[editable path="YSort/Ores/O1"]

@@ -9,26 +9,26 @@ var query
 
 
 var mining_data = {
-	"Ore1":{
-		"type": "Gold",
-		"hits_to_mine": 3,
-		"current_hits": 0,
-		"respawn": 5,
-		"active": true
+	"O1":{ #Gold
+		"T": "G", #type
+		"TH": 3, #hits to mine
+		"CT": 0, #current hits
+		"R": 5, #respawn
+		"A": 1 #active
 	},
-	"Ore2":{
-		"type": "Silver",
-		"hits_to_mine": 3,
-		"current_hits": 0,
-		"respawn": 5,
-		"active": true
+	"O2":{
+		"T": "S",
+		"TH": 3,
+		"CT": 0,
+		"R": 5,
+		"A": 1
 	},
-	"Ore3":{
-		"type": "Tin",
-		"hits_to_mine": 3,
-		"current_hits": 0,
-		"respawn": 5,
-		"active": true
+	"O3":{
+		"type": "T",
+		"TH": 3,
+		"CT": 0,
+		"R": 5,
+		"A": 1
 	}
 }
 

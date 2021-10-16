@@ -31,7 +31,7 @@ var state = e.IDLE
 var facing = RIGHT
 var attacking = false
 var previous_state = e.IDLE
-var attack_type = ["AttackSwing", "AttackSpin", 0, "Not Attacking"]
+var attack_type = ["AttackSwing", "AttackSpin", 0, "N"]
 var attack_timer_started = false
 
 
@@ -43,13 +43,13 @@ func _ready():
 	
 func _physics_process(delta):
 	var enemy = map_enemy_list.enemy_list[int(name)]
-	if enemy["EnemyState"] == "Dead":
+	if enemy["ES"] == "Dead":
 		pass
 	else:
-		enemy["EnemyLocation"] = position
-		enemy["EnemyState"] = e_string[state]
+		enemy["EL"] = Vector2(int(position.x),int(position.y))
+		enemy["ES"] = e_string[state]
 		if not attacking:
-			enemy["AttackType"] = attack_type[3]
+			enemy["EAT"] = attack_type[3]
 		if previous_state != state:
 			previous_state = state
 		blend_position()
@@ -90,10 +90,10 @@ func _physics_process(delta):
 					attacking = true					
 					if attack_type[2] == 0:
 						animation_state.travel(attack_type[0]) #attack swing
-						enemy["AttackType"] = attack_type[0]
+						enemy["EAT"] = attack_type[0]
 					elif attack_type[2] == 1:
 						animation_state.travel(attack_type[1]) #attack spin
-						enemy["AttackType"] = attack_type[1]
+						enemy["EAT"] = attack_type[1]
 					
 				
 		velocity = move_and_slide(velocity)

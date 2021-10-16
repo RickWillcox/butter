@@ -55,7 +55,7 @@ func _physics_process(delta):
 	
 func MoveEnemy(new_position, server_state, server_attack_type):
 	state = server_state
-	if not server_attack_type == "Not Attacking":
+	if not server_attack_type == "N":
 		attack_type = server_attack_type
 		state = ATTACK
 		return

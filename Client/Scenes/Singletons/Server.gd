@@ -91,6 +91,7 @@ remote func ReturnTokenVerificationResults(result):
 		
 func SendPlayerState(player_state):
 	rpc_unreliable_id(1, "ReceivePlayerState", player_state)
+
 	
 remote func ReceiveWorldState(world_state):
 	get_node("../SceneHandler/Map").UpdateWorldState(world_state)
