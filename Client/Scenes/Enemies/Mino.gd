@@ -1,20 +1,30 @@
 extends KinematicBody2D
 
-enum{
-	IDLE, WANDER, CHASE, ATTACK, DEAD
+enum STATES{
+	IDLE, 
+	WANDER, 
+	CHASE, 
+	ATTACK, 
+	DEAD
+}
+
+enum ATTACK_TYPES {
+	ATTACKSWING,
+	ATTACKSPIN,
+	NOTATTACKING		
 }
 
 onready var sprite = $Sprite
 onready var animation_player = $AnimationPlayer
 onready var animation_tree = $AnimationTree
 onready var animation_state = $AnimationTree.get("parameters/playback")
-onready var attack_cooldown_timer = $AttackCooldown
+onready var attack_timer = $AttackTimer
 
 var velocity = Vector2.ZERO
 var blend_position = Vector2.ZERO
 var facing_blend_position = Vector2.ZERO
 var rng
-var state = IDLE
+var state = STATES.IDLE
 var attacking = false
 var current_position
 var attack_type = ""
@@ -27,36 +37,62 @@ var update_position = Vector2(0,0)
 func ready():
 	$HealthBar.max_value = max_hp
 	$HealthBar.value = current_hp
+#	animation_tree.active = true
+	
 
 func _physics_process(delta):
 	if current_hp <= 0:
 		queue_free()
-	animation_tree.active = true
+	
 	blend_position()
 	match state:
-		IDLE:
-			animation_state.travel("Idle")
-		WANDER:
-			animation_state.travel("Run")
-		CHASE:
-			animation_state.travel("Run")
-		ATTACK:
-			animation_state.travel("Attack")
-		DEAD:
+		STATES.IDLE:
+			pass
+		STATES.WANDER:
+			pass
+		STATES.CHASE:
+			pass
+		STATES.ATTACK:
+			pass
+		STATES.DEAD:
 			queue_free()
 	
 func MoveEnemy(new_position):
-	if position.x > new_position.x:
-		facing_blend_position = Vector2(-2,0)
-		set_position(new_position)
-		state = WANDER
-	elif position.x < new_position.x:
-		facing_blend_position = Vector2(2,0)
-		set_position(new_position)
-		state = WANDER
-	else:
-		state = IDLE
+	if attack_timer.is_stopped():
+		if position.x > new_position.x:
+			facing_blend_position = Vector2(-2,0)
+			animation_player.play("Run Left")
+			set_position(new_position)
+		elif position.x < new_position.x:
+			facing_blend_position = Vector2(2,0)
+			set_position(new_position)
+			animation_player.play("Run Right")
+		else:
+			if facing_blend_position == Vector2(-2,0):
+				animation_player.play("Idle Left")
+			else:
+				animation_player.play("Idle Right")
 
+
+func EnemyAttack(attack_type):
+	print(ATTACK_TYPES.keys()[attack_type])
+	if ATTACK_TYPES.keys()[attack_type] == "ATTACKSWING":
+		attack_timer.wait_time = 1.9
+		if facing_blend_position.x > 0:
+			animation_player.play("Attack Swing Right")
+			animation_player.queue("Idle Right")
+		else:
+			animation_player.play("Attack Swing Left")
+			animation_player.queue("Idle Left")
+	elif ATTACK_TYPES.keys()[attack_type] == "ATTACKSPIN":
+		attack_timer.wait_time = 1.1
+		if facing_blend_position.x > 0:
+			animation_player.play("Attack Spin Right")
+			animation_player.queue("Idle Right")
+		else:
+			animation_player.play("Attack Spin Left")
+			animation_player.queue("Idle Left")
+	attack_timer.start()
 	
 func Health(health):
 	if health != current_hp:
@@ -82,6 +118,4 @@ func blend_position():
 	animation_tree.set("parameters/AttackSpin/blend_position", facing_blend_position)
 
 
-func _on_AttackCooldown_timeout() -> void:
-	state = IDLE
 

@@ -1,8 +1,8 @@
 extends Node
 
 var enemy_id_counter = 1 
-var enemy_maximum = 1
-var enemy_types = ["Mino"] #list of enemies that spawn
+var enemy_maximum = 3
+var enemy_types = ["Slime", "Mino"] #list of enemies that spawn
 var enemy_spawn_points = [Vector2 (250, 225), Vector2 (500, 150), Vector2 (570, 470)]
 var open_locations = [0,1,2]
 var occupied_locations = {}
@@ -38,7 +38,7 @@ func SpawnEnemy():
 		get_parent().get_node("ServerMap").SpawnEnemy(enemy_id_counter, location, type)
 		enemy_id_counter += 1
 	for enemy in enemy_list.keys():
-		if enemy_list[enemy]["ES"] == "Dead":
+		if enemy_list[enemy]["ES"] == "DEAD":
 			if enemy_list[enemy]["TO"] == 0:
 				enemy_list.erase(enemy)
 			else:
@@ -54,7 +54,7 @@ func EnemyMeleeHit(enemy_id, damage):
 		enemy_list[enemy_id]["ECH"] = enemy_list[enemy_id]["ECH"] - damage
 		if enemy_list[enemy_id]["ECH"] <= 0:
 			get_node("/root/Server/ServerMap/YSort/Enemies/" + str(enemy_id)).queue_free()
-			enemy_list[enemy_id]["ES"] = "Dead"
+			enemy_list[enemy_id]["ES"] = "DEAD"
 			open_locations.append(occupied_locations[enemy_id])
 			occupied_locations.erase(enemy_id)
 	

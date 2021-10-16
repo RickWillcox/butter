@@ -47,17 +47,18 @@ func _ready():
 	randomize()
 	rng = RandomNumberGenerator.new()
 #	state = pick_random_state([STATES.IDLE, STATES.WANDER, STATES.ATTACK])
-	state = pick_random_state([STATES.ATTACK])
+	state = pick_random_state([STATES.IDLE])
 	animation_tree.active = true
 	
 func _physics_process(delta):
-	print(STATES.keys()[state])
+
 	var enemy = map_enemy_list.enemy_list[int(name)]
-	if enemy["ES"] == "Dead":
+	if enemy["ES"] == STATES.keys()[STATES.DEAD]:
 		pass
 	else:
 		enemy["EL"] = Vector2(int(position.x),int(position.y))  #update enemy position in world state
 		blend_position()
+#		print(STATES.keys()[state])
 
 		match state:
 			STATES.IDLE:
@@ -65,13 +66,14 @@ func _physics_process(delta):
 				velocity = velocity.move_toward(Vector2.ZERO, FRICTION)
 				seek_player()
 				time_left_wander_controller()
+				
 			STATES.WANDER:
 				animation_state.travel("Run")
 				seek_player()
 				time_left_wander_controller()
 				var direction = global_position.direction_to(wander_controller.target_position)
 				velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION * delta)
-
+				
 				if global_position.distance_to(wander_controller.target_position) <= WANDER_TARGET_RANGE:
 					state = pick_random_state([STATES.IDLE, STATES.WANDER, STATES.ATTACK])
 					wander_controller.start_wander_timer(rand_range(1,3))
@@ -89,20 +91,20 @@ func _physics_process(delta):
 				
 			STATES.ATTACK:
 				#set attack type here
-				if not attack_timer.is_stopped(): 
-					print("test")
-					var num = rng.randi_range(0,1)					
+				if attack_timer.is_stopped(): #is the timer running? if yes it means an attack is being played.
+					rng.randomize()
+					var num = rng.randi_range(0,1)		
 					if num == 0:
 						attack_timer.wait_time = 1.9
 						animation_state.travel(ATTACK_TYPES.keys()[ATTACK_TYPES.ATTACKSWING]) #attack swing
+						game_server_script.EnemyAttack(name, ATTACK_TYPES.ATTACKSWING)
 					elif num == 1:
 						attack_timer.wait_time = 1.1
 						animation_state.travel(ATTACK_TYPES.keys()[ATTACK_TYPES.ATTACKSPIN]) #attack spin
+						game_server_script.EnemyAttack(name, ATTACK_TYPES.ATTACKSPIN)
 					attack_timer.start()
-					print("attack started")
-					print(STATES.keys()[state])
 					
-
+					
 		velocity = move_and_slide(velocity)
 		
 func pick_random_state(state_list):
@@ -141,5 +143,4 @@ func attack(attack_type):
 
 func _on_AttackTimer_timeout() -> void:
 	state = STATES.IDLE
-	print("attack ended, starting idle")
-	print(STATES.keys()[state])
+	

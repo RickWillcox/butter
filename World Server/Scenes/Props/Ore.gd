@@ -2,7 +2,7 @@ extends StaticBody2D
 
 var respawn_timer_active = false
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if ServerData.mining_data[self.name]["A"] == 0:
 		if not respawn_timer_active:
 			respawn_timer_active = true

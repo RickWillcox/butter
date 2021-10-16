@@ -7,7 +7,6 @@
 [sub_resource type="Animation" id=1]
 resource_name = "Attack Spin Left"
 length = 1.1
-loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -24,7 +23,6 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=2]
 resource_name = "Attack Spin Right"
 length = 1.3
-loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -40,7 +38,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=3]
 length = 1.9
-loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -56,7 +53,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=4]
 length = 1.9
-loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -267,7 +263,7 @@ script = ExtResource( 4 )
 texture = ExtResource( 1 )
 hframes = 9
 vframes = 20
-frame = 2
+frame = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 "anims/Attack Spin Left" = SubResource( 1 )
@@ -282,7 +278,6 @@ frame = 2
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 37 )
 anim_player = NodePath("../AnimationPlayer")
-active = true
 parameters/playback = SubResource( 38 )
 parameters/AttackSpin/blend_position = Vector2( 0, 0 )
 parameters/AttackSwing/blend_position = Vector2( -0.0983093, 0.903615 )
@@ -295,7 +290,5 @@ margin_top = -36.6777
 margin_right = 10.5129
 margin_bottom = -32.6777
 
-[node name="AttackCooldown" type="Timer" parent="."]
+[node name="AttackTimer" type="Timer" parent="."]
 one_shot = true
-
-[connection signal="timeout" from="AttackCooldown" to="." method="_on_AttackCooldown_timeout"]
