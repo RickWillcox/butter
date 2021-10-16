@@ -1,7 +1,7 @@
 extends Node
 
 var enemy_id_counter = 1 
-var enemy_maximum = 3
+var enemy_maximum = 1
 var enemy_types = ["Mino"] #list of enemies that spawn
 var enemy_spawn_points = [Vector2 (250, 225), Vector2 (500, 150), Vector2 (570, 470)]
 var open_locations = [0,1,2]
@@ -17,9 +17,6 @@ func _ready():
 	timer.autostart = true
 	timer.connect("timeout", self, "SpawnEnemy")
 	self.add_child(timer)
-
-func _physics_process(delta: float):
-		UpdateEnemyPosition(name)
 			
 func SpawnEnemy():
 	if enemy_list.size() >= enemy_maximum:
@@ -36,9 +33,8 @@ func SpawnEnemy():
 		 "EL": location, #EnemyLocation
 		 "ECH": EnemyData.enemies[type]["MaxHealth"], #EnemyCurrentHealth
 		 "EMH": EnemyData.enemies[type]["MaxHealth"], #EnemyMaxHealth
-		 "ES": "Idle", #EnemyState
-		 "TO": 1, #time_out
-		 "EAT": ""} #EAttackType
+		 "ES": "ATTACK", #EnemyState
+		 "TO": 1} #EAttackType
 		get_parent().get_node("ServerMap").SpawnEnemy(enemy_id_counter, location, type)
 		enemy_id_counter += 1
 	for enemy in enemy_list.keys():

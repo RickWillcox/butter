@@ -17,7 +17,6 @@ var rng
 var state = IDLE
 var attacking = false
 var current_position
-var old_position = Vector2(0,0)
 var attack_type = ""
 var max_hp	= 9000
 var current_hp = 9000
@@ -42,34 +41,22 @@ func _physics_process(delta):
 		CHASE:
 			animation_state.travel("Run")
 		ATTACK:
-			if attacking == false:
-				attacking = true
-				if attack_type == "AttackSwing":
-					attack_cooldown_timer.wait_time = 2
-				if attack_type == "AttackSpin":
-					attack_cooldown_timer.wait_time = 1.4
-				attack_cooldown_timer.start()
-				animation_state.travel(attack_type)
+			animation_state.travel("Attack")
 		DEAD:
 			queue_free()
 	
-func MoveEnemy(new_position, server_state, server_attack_type):
-	state = server_state
-	if not server_attack_type == "N":
-		attack_type = server_attack_type
-		state = ATTACK
-		return
-	if old_position.x > new_position.x:
+func MoveEnemy(new_position):
+	if position.x > new_position.x:
 		facing_blend_position = Vector2(-2,0)
 		set_position(new_position)
 		state = WANDER
-	elif old_position.x < new_position.x:
+	elif position.x < new_position.x:
 		facing_blend_position = Vector2(2,0)
 		set_position(new_position)
 		state = WANDER
 	else:
 		state = IDLE
-	old_position = new_position
+
 	
 func Health(health):
 	if health != current_hp:

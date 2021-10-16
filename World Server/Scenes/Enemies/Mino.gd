@@ -5,97 +5,104 @@ export var MAX_SPEED = 250
 export var FRICTION = 200
 export var WANDER_TARGET_RANGE = 5
 
-enum e{
-	IDLE, WANDER, CHASE, ATTACK, DEAD
-}
-
-var e_string = ["IDLE", "WANDER", "CHASE", "ATTACK", "DEAD"]
-
-enum{
-	LEFT, RIGHT
-}
-
 onready var animation_tree = $MinoAnimationTree
 onready var animation_state = $MinoAnimationTree.get("parameters/playback")
 onready var wander_controller = $WanderController
 onready var player_detection_zone = $PlayerDetectionZone
 onready var map_enemy_list = get_node("../../../../Map")
-onready var attack_timer = get_node("AttackTimer")
+onready var game_server_script = get_node("../../../../../Server")
+onready var attack_timer = $AttackTimer
+
+enum STATES{
+	IDLE, 
+	WANDER, 
+	CHASE, 
+	ATTACK, 
+	DEAD
+}
+
+enum{
+	LEFT, 
+	RIGHT
+}
+
+enum ATTACK_TYPES {
+	ATTACKSWING,
+	ATTACKSPIN,
+	NOTATTACKING		
+}
 
 var velocity = Vector2.ZERO
-var knockback = Vector2.ZERO
 var blend_position = Vector2.ZERO
 var facing_blend_position = Vector2.ZERO
+var state = STATES.ATTACK
+var attack = ATTACK_TYPES.NOTATTACKING
+var previous_state = STATES.IDLE
 var rng
-var state = e.IDLE
 var facing = RIGHT
 var attacking = false
-var previous_state = e.IDLE
-var attack_type = ["AttackSwing", "AttackSpin", 0, "N"]
-var attack_timer_started = false
 
 
 func _ready():
 	randomize()
 	rng = RandomNumberGenerator.new()
-	state = pick_random_state([e.IDLE, e.WANDER, e.ATTACK])
+#	state = pick_random_state([STATES.IDLE, STATES.WANDER, STATES.ATTACK])
+	state = pick_random_state([STATES.ATTACK])
 	animation_tree.active = true
 	
 func _physics_process(delta):
+	print(STATES.keys()[state])
 	var enemy = map_enemy_list.enemy_list[int(name)]
 	if enemy["ES"] == "Dead":
 		pass
 	else:
-		enemy["EL"] = Vector2(int(position.x),int(position.y))
-		enemy["ES"] = e_string[state]
-		if not attacking:
-			enemy["EAT"] = attack_type[3]
-		if previous_state != state:
-			previous_state = state
+		enemy["EL"] = Vector2(int(position.x),int(position.y))  #update enemy position in world state
 		blend_position()
+
 		match state:
-			e.IDLE:
+			STATES.IDLE:
 				animation_state.travel("Idle")
 				velocity = velocity.move_toward(Vector2.ZERO, FRICTION)
 				seek_player()
 				time_left_wander_controller()
-			e.WANDER:
+			STATES.WANDER:
 				animation_state.travel("Run")
 				seek_player()
 				time_left_wander_controller()
-				
 				var direction = global_position.direction_to(wander_controller.target_position)
 				velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION * delta)
-	#			target position normalised to start movement
 
 				if global_position.distance_to(wander_controller.target_position) <= WANDER_TARGET_RANGE:
-					state = pick_random_state([e.IDLE, e.WANDER, e.ATTACK])
+					state = pick_random_state([STATES.IDLE, STATES.WANDER, STATES.ATTACK])
 					wander_controller.start_wander_timer(rand_range(1,3))
 					
-			e.CHASE:
+			STATES.CHASE:
 				var player = player_detection_zone.player
 				if player != null:
 					if global_position.distance_to(player.global_position) <= 25 and not attacking:
-						state = e.ATTACK
+						state = STATES.ATTACK
 					animation_state.travel("Run")
 					var direction = global_position.direction_to(player.global_position)
 					velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION * delta)
 				else:
-					state = e.IDLE
+					state = STATES.IDLE
 				
-			e.ATTACK:
-				if attacking == false: 
+			STATES.ATTACK:
+				#set attack type here
+				if not attack_timer.is_stopped(): 
+					print("test")
+					var num = rng.randi_range(0,1)					
+					if num == 0:
+						attack_timer.wait_time = 1.9
+						animation_state.travel(ATTACK_TYPES.keys()[ATTACK_TYPES.ATTACKSWING]) #attack swing
+					elif num == 1:
+						attack_timer.wait_time = 1.1
+						animation_state.travel(ATTACK_TYPES.keys()[ATTACK_TYPES.ATTACKSPIN]) #attack spin
 					attack_timer.start()
-					attack_type[2] = rng.randi_range(0,1)
-					attacking = true					
-					if attack_type[2] == 0:
-						animation_state.travel(attack_type[0]) #attack swing
-						enemy["EAT"] = attack_type[0]
-					elif attack_type[2] == 1:
-						animation_state.travel(attack_type[1]) #attack spin
-						enemy["EAT"] = attack_type[1]
+					print("attack started")
+					print(STATES.keys()[state])
 					
-				
+
 		velocity = move_and_slide(velocity)
 		
 func pick_random_state(state_list):
@@ -104,7 +111,7 @@ func pick_random_state(state_list):
 	
 func seek_player():
 	if player_detection_zone.can_see_player():
-		state = e.CHASE
+		state = STATES.CHASE
 		
 func blend_position():
 	var old_blend_position = blend_position
@@ -124,12 +131,15 @@ func blend_position():
 
 func time_left_wander_controller():
 	if wander_controller.get_time_left() == 0:
-		state = pick_random_state([e.IDLE, e.WANDER, e.ATTACK])
+		state = pick_random_state([STATES.IDLE, STATES.WANDER, STATES.ATTACK])
 		wander_controller.start_wander_timer(rand_range(1,3))
 
 
+func attack(attack_type):
+	game_server_script.EnemyAttack(name, attack_type)
+
+
 func _on_AttackTimer_timeout() -> void:
-	attacking = false
-	attack_timer.start()
-	state = e.IDLE
-	
+	state = STATES.IDLE
+	print("attack ended, starting idle")
+	print(STATES.keys()[state])

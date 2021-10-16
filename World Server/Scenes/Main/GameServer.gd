@@ -112,6 +112,9 @@ remote func ReceivePlayerState(player_state):
 	
 func SendWorldState(world_state): #in case of maps or chunks you will want to track player collection and send accordingly
 	rpc_unreliable_id(0, "ReceiveWorldState", world_state)
+
+func EnemyAttack(enemy_id, attack_type):
+	rpc_id(0, "ReceiveEnemyAttack", enemy_id, attack_type)
 	
 
 
