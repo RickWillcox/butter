@@ -50,7 +50,6 @@ func UpdateWorldState(world_state):
 	if world_state["T"] > last_world_state:
 		last_world_state = world_state["T"]
 		world_state_buffer.append(world_state)
-		print(world_state_buffer[0])
 		
 func _physics_process(_delta):
 	var render_time = Server.client_clock - interpolation_offset
@@ -83,9 +82,7 @@ func _physics_process(_delta):
 					continue
 				if get_node("YSort/Enemies").has_node(str(enemy)): #does enemy exist
 					var new_position = lerp(world_state_buffer[1]["E"][enemy]["EL"], world_state_buffer[2]["E"][enemy]["EL"], inperpolation_factor)
-					var state = world_state_buffer[1]["E"][enemy]["ES"]
-					var attack_type = world_state_buffer[1]["E"][enemy]["EAT"]
-					get_node("YSort/Enemies/" + str(enemy)).MoveEnemy(new_position, state, attack_type)
+					get_node("YSort/Enemies/" + str(enemy)).MoveEnemy(new_position)
 					get_node("YSort/Enemies/" + str(enemy)).Health(world_state_buffer[1]["E"][enemy]["ECH"])
 				else:
 					SpawnNewEnemy(enemy, world_state_buffer[2]["E"][enemy])
@@ -121,8 +118,7 @@ func _physics_process(_delta):
 					var position_delta = ((world_state_buffer[1]["E"][enemy]["EL"] - world_state_buffer[0]["E"][enemy]["EL"]))
 					var new_position = world_state_buffer[1]["E"][enemy]["EL"] + (position_delta * extrapolation_factor)
 					var state = world_state_buffer[1]["E"][enemy]["ES"]
-					var attack_type = world_state_buffer[1]["E"][enemy]["EAT"]
-					get_node("YSort/Enemies/" + str(enemy)).MoveEnemy(new_position, state, attack_type)
+					get_node("YSort/Enemies/" + str(enemy)).MoveEnemy(new_position)
 					get_node("YSort/Enemies/" + str(enemy)).Health(world_state_buffer[1]["E"][enemy]["ECH"])
 				else:
 					SpawnNewEnemy(enemy, world_state_buffer[1]["E"][enemy])

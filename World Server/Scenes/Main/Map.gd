@@ -17,9 +17,6 @@ func _ready():
 	timer.autostart = true
 	timer.connect("timeout", self, "SpawnEnemy")
 	self.add_child(timer)
-
-func _physics_process(delta: float):
-		UpdateEnemyPosition(name)
 			
 func SpawnEnemy():
 	if enemy_list.size() >= enemy_maximum:
@@ -36,13 +33,12 @@ func SpawnEnemy():
 		 "EL": location, #EnemyLocation
 		 "ECH": EnemyData.enemies[type]["MaxHealth"], #EnemyCurrentHealth
 		 "EMH": EnemyData.enemies[type]["MaxHealth"], #EnemyMaxHealth
-		 "ES": "Idle", #EnemyState
-		 "TO": 1, #time_out
-		 "EAT": ""} #EAttackType
+		 "ES": "ATTACK", #EnemyState
+		 "TO": 1} #EAttackType
 		get_parent().get_node("ServerMap").SpawnEnemy(enemy_id_counter, location, type)
 		enemy_id_counter += 1
 	for enemy in enemy_list.keys():
-		if enemy_list[enemy]["ES"] == "Dead":
+		if enemy_list[enemy]["ES"] == "DEAD":
 			if enemy_list[enemy]["TO"] == 0:
 				enemy_list.erase(enemy)
 			else:
@@ -58,7 +54,7 @@ func EnemyMeleeHit(enemy_id, damage):
 		enemy_list[enemy_id]["ECH"] = enemy_list[enemy_id]["ECH"] - damage
 		if enemy_list[enemy_id]["ECH"] <= 0:
 			get_node("/root/Server/ServerMap/YSort/Enemies/" + str(enemy_id)).queue_free()
-			enemy_list[enemy_id]["ES"] = "Dead"
+			enemy_list[enemy_id]["ES"] = "DEAD"
 			open_locations.append(occupied_locations[enemy_id])
 			occupied_locations.erase(enemy_id)
 	
