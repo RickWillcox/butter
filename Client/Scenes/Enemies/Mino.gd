@@ -65,8 +65,8 @@ func MoveEnemy(new_position):
 			set_position(new_position)
 		elif position.x < new_position.x:
 			facing_blend_position = Vector2(2,0)
-			set_position(new_position)
 			animation_player.play("Run Right")
+			set_position(new_position)
 		else:
 			if facing_blend_position == Vector2(-2,0):
 				animation_player.play("Idle Left")
@@ -75,7 +75,6 @@ func MoveEnemy(new_position):
 
 
 func EnemyAttack(attack_type):
-	print(ATTACK_TYPES.keys()[attack_type])
 	if ATTACK_TYPES.keys()[attack_type] == "ATTACKSWING":
 		attack_timer.wait_time = 1.9
 		if facing_blend_position.x > 0:
