@@ -20,11 +20,11 @@ func _on_Area2D_body_entered(body: Node) -> void:
 		var enemy_id = int(body.get_name())
 		get_node("/root/Server/Map").EnemyMeleeHit(enemy_id, 150) #150 is damage to change later
 	elif body.is_in_group("Ores"):
-		if ServerData.mining_data[body.name]["active"] == true:
-			if ServerData.mining_data[body.name]["current_hits"] == ServerData.mining_data[body.name]["hits_to_mine"] - 1:
+		if ServerData.mining_data[body.name]["A"] == 1:
+			if ServerData.mining_data[body.name]["CT"] == ServerData.mining_data[body.name]["TH"] - 1:
 				#node drops item and goes inactive
-				ServerData.mining_data[body.name]["active"] = false
-				ServerData.mining_data[body.name]["current_hits"] = 0
+				ServerData.mining_data[body.name]["A"] = 0
+				ServerData.mining_data[body.name]["CT"] = 0
 			else:
-				ServerData.mining_data[body.name]["current_hits"] += 1
+				ServerData.mining_data[body.name]["CT"] += 1
 

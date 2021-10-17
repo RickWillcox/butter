@@ -20,7 +20,7 @@ func _ready():
 func _physics_process(_delta):
 	pass
 	
-func MoveEnemy(new_position, server_state, server_attack_type):
+func MoveEnemy(new_position):
 	set_position(new_position)
 	
 func Health(health):

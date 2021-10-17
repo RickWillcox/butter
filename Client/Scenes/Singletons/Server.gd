@@ -112,7 +112,9 @@ remote func DespawnPlayer(player_id):
 func cw_MeleeAttack(blend_position):
 	rpc_id(1, "cw_MeleeAttack", blend_position)
 
-
+remote func ReceiveEnemyAttack(enemy_id, attack_type):
+	if get_node("../SceneHandler/Map/YSort/Enemies/").has_node(str(enemy_id)):
+		get_node("../SceneHandler/Map/YSort/Enemies/" + str(enemy_id)).EnemyAttack(attack_type)	
 #remote func ReceiveAttack(position, animation_vector, spawn_time, player_id):
 #	if player_id == get_tree().get_network_unique_id():
 #		pass #make client side predictions here
