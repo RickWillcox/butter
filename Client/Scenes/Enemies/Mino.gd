@@ -80,18 +80,14 @@ func EnemyAttack(attack_type):
 		attack_timer.wait_time = 1.9
 		if facing_blend_position.x > 0:
 			animation_player.play("Attack Swing Right")
-			animation_player.queue("Idle Right")
 		else:
 			animation_player.play("Attack Swing Left")
-			animation_player.queue("Idle Left")
 	elif ATTACK_TYPES.keys()[attack_type] == "ATTACKSPIN":
 		attack_timer.wait_time = 1.1
 		if facing_blend_position.x > 0:
 			animation_player.play("Attack Spin Right")
-			animation_player.queue("Idle Right")
 		else:
 			animation_player.play("Attack Spin Left")
-			animation_player.queue("Idle Left")
 	attack_timer.start()
 	
 func Health(health):

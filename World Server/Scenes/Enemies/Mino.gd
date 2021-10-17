@@ -35,23 +35,22 @@ enum ATTACK_TYPES {
 var velocity = Vector2.ZERO
 var blend_position = Vector2.ZERO
 var facing_blend_position = Vector2.ZERO
-var state = STATES.ATTACK
+var state 
 var attack = ATTACK_TYPES.NOTATTACKING
 var previous_state = STATES.IDLE
 var rng
 var facing = RIGHT
-var attacking = false
+
 
 
 func _ready():
 	randomize()
 	rng = RandomNumberGenerator.new()
-#	state = pick_random_state([STATES.IDLE, STATES.WANDER, STATES.ATTACK])
-	state = pick_random_state([STATES.IDLE])
+	state = pick_random_state([STATES.IDLE, STATES.WANDER, STATES.ATTACK])
+
 	animation_tree.active = true
 	
 func _physics_process(delta):
-
 	var enemy = map_enemy_list.enemy_list[int(name)]
 	if enemy["ES"] == STATES.keys()[STATES.DEAD]:
 		pass
@@ -81,7 +80,7 @@ func _physics_process(delta):
 			STATES.CHASE:
 				var player = player_detection_zone.player
 				if player != null:
-					if global_position.distance_to(player.global_position) <= 25 and not attacking:
+					if global_position.distance_to(player.global_position) <= 25 and attack_timer.is_stopped():
 						state = STATES.ATTACK
 					animation_state.travel("Run")
 					var direction = global_position.direction_to(player.global_position)
@@ -96,12 +95,14 @@ func _physics_process(delta):
 					var num = rng.randi_range(0,1)		
 					if num == 0:
 						attack_timer.wait_time = 1.9
-						animation_state.travel(ATTACK_TYPES.keys()[ATTACK_TYPES.ATTACKSWING]) #attack swing
+						animation_state.travel("AttackSwing") #attack swing
 						game_server_script.EnemyAttack(name, ATTACK_TYPES.ATTACKSWING)
+						print("attack swing")
 					elif num == 1:
 						attack_timer.wait_time = 1.1
-						animation_state.travel(ATTACK_TYPES.keys()[ATTACK_TYPES.ATTACKSPIN]) #attack spin
+						animation_state.travel("AttackSpin") #attack spin
 						game_server_script.EnemyAttack(name, ATTACK_TYPES.ATTACKSPIN)
+						print("attack spin")
 					attack_timer.start()
 					
 					
@@ -143,4 +144,5 @@ func attack(attack_type):
 
 func _on_AttackTimer_timeout() -> void:
 	state = STATES.IDLE
+
 	
